@@ -1,0 +1,14 @@
+Name,Age,Gender,Weight,Height,BodyFat,Goal,Date
+John Doe,34,Male,90,180,24,Fat Loss,2024-01-15
+John Doe,34,Male,88,180,23,Fat Loss,2024-02-01
+John Doe,34,Male,86,180,22,Fat Loss,2024-02-15
+John Doe,34,Male,85,180,22,Fat Loss,2024-03-01
+Jane Smith,28,Female,62,165,18,Muscle Gain,2024-03-01
+Mike Johnson,45,Male,95,175,28,Fat Loss,2024-03-01
+Emily Davis,31,Female,55,160,15,Maintenance,2024-03-01
+Tom Brown,50,Male,105,182,32,Weight Loss,2024-03-01
+Sarah Wilson,25,Female,70,170,24,Fat Loss,2024-03-01
+David Lee,38,Male,75,178,16,Muscle Gain,2024-03-01
+Laura Moore,42,Female,80,162,30,Weight Loss,2024-03-01
+James Taylor,29,Male,68,172,12,Endurance,2024-03-01
+Linda Anderson,36,Female,58,168,19,Maintenance,2024-03-01

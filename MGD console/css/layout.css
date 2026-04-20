@@ -1,0 +1,142 @@
+/* ==========================================================================
+   Print Layout (PDF Export)
+   ========================================================================== */
+@media print {
+    body {
+        background: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sidebar {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    button,
+    .feature-note,
+    .insights-list {
+        display: none !important;
+    }
+
+    .header {
+        margin-bottom: 24px !important;
+        text-align: center;
+    }
+
+    .chart-card {
+        break-inside: avoid;
+        border: 1px solid #ccc;
+    }
+}
+
+/* ==========================================================================
+   Base Layout
+   ========================================================================== */
+/* css/layout.css */
+
+.app-layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 240px;
+    background-color: var(--bg-card);
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-3) var(--space-2);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02);
+    z-index: 10;
+}
+
+.sidebar-header {
+    margin-bottom: var(--space-4);
+    padding: 0 var(--space-2);
+}
+
+.sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    letter-spacing: -0.02em;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--bg-main);
+}
+
+.view {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.view.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    margin-bottom: var(--space-4);
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.header .subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* Grid Layouts */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Two column grid requirement */
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+@media (max-width: 1024px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,122 @@
+Name,Age,Gender,Weight,Height,BodyFat,Goal,Date
+John Smith,28,M,85.5,178,18.2,Muscle Gain,2024-01-01
+John Smith,28,M,86.2,178,18.5,Muscle Gain,2024-01-15
+John Smith,28,M,86.8,178,18.8,Muscle Gain,2024-02-01
+John Smith,28,M,87.3,178,19.1,Muscle Gain,2024-02-15
+Sarah Johnson,32,F,68.9,165,22.1,Fat Loss,2024-01-01
+Sarah Johnson,32,F,68.2,165,21.5,Fat Loss,2024-01-15
+Sarah Johnson,32,F,67.6,165,20.9,Fat Loss,2024-02-01
+Sarah Johnson,32,F,67.1,165,20.4,Fat Loss,2024-02-15
+Mike Davis,45,M,92.4,182,24.8,Fat Loss,2024-01-01
+Mike Davis,45,M,91.8,182,24.2,Fat Loss,2024-01-15
+Mike Davis,45,M,91.2,182,23.6,Fat Loss,2024-02-01
+Mike Davis,45,M,90.7,182,23.1,Fat Loss,2024-02-15
+Emily Wilson,26,F,59.8,162,19.5,Muscle Gain,2024-01-01
+Emily Wilson,26,F,60.4,162,19.8,Muscle Gain,2024-01-15
+Emily Wilson,26,F,61.0,162,20.1,Muscle Gain,2024-02-01
+Emily Wilson,26,F,61.5,162,20.4,Muscle Gain,2024-02-15
+David Brown,38,M,78.6,175,16.8,Maintenance,2024-01-01
+David Brown,38,M,78.8,175,17.0,Maintenance,2024-01-15
+David Brown,38,M,78.4,175,16.9,Maintenance,2024-02-01
+David Brown,38,M,78.7,175,16.8,Maintenance,2024-02-15
+Lisa Garcia,29,F,71.2,168,23.4,Fat Loss,2024-01-01
+Lisa Garcia,29,F,70.6,168,22.8,Fat Loss,2024-01-15
+Lisa Garcia,29,F,70.1,168,22.3,Fat Loss,2024-02-01
+Lisa Garcia,29,F,69.6,168,21.8,Fat Loss,2024-02-15
+Robert Miller,52,M,88.9,180,22.1,Maintenance,2024-01-01
+Robert Miller,52,M,89.1,180,22.2,Maintenance,2024-01-15
+Robert Miller,52,M,88.8,180,22.0,Maintenance,2024-02-01
+Robert Miller,52,M,89.0,180,22.1,Maintenance,2024-02-15
+Anna Martinez,24,F,63.7,158,21.2,Muscle Gain,2024-01-01
+Anna Martinez,24,F,64.3,158,21.5,Muscle Gain,2024-01-15
+Anna Martinez,24,F,64.8,158,21.8,Muscle Gain,2024-02-01
+Anna Martinez,24,F,65.2,158,22.1,Muscle Gain,2024-02-15
+Chris Anderson,35,M,82.3,177,19.6,Fat Loss,2024-01-01
+Chris Anderson,35,M,81.7,177,19.0,Fat Loss,2024-01-15
+Chris Anderson,35,M,81.2,177,18.5,Fat Loss,2024-02-01
+Chris Anderson,35,M,80.8,177,18.1,Fat Loss,2024-02-15
+Maria Rodriguez,31,F,74.5,172,24.7,Fat Loss,2024-01-01
+Maria Rodriguez,31,F,73.9,172,24.1,Fat Loss,2024-01-15
+Maria Rodriguez,31,F,73.4,172,23.6,Fat Loss,2024-02-01
+Maria Rodriguez,31,F,72.9,172,23.1,Fat Loss,2024-02-15
+James Taylor,41,M,79.8,179,18.9,Maintenance,2024-01-01
+James Taylor,41,M,80.0,179,19.0,Maintenance,2024-01-15
+James Taylor,41,M,79.7,179,18.8,Maintenance,2024-02-01
+James Taylor,41,M,79.9,179,18.9,Maintenance,2024-02-15
+Jennifer Lee,27,F,66.4,163,20.3,Muscle Gain,2024-01-01
+Jennifer Lee,27,F,67.0,163,20.6,Muscle Gain,2024-01-15
+Jennifer Lee,27,F,67.5,163,20.9,Muscle Gain,2024-02-01
+Jennifer Lee,27,F,67.9,163,21.2,Muscle Gain,2024-02-15
+Kevin White,33,M,87.6,183,21.4,Fat Loss,2024-01-01
+Kevin White,33,M,87.0,183,20.8,Fat Loss,2024-01-15
+Kevin White,33,M,86.5,183,20.3,Fat Loss,2024-02-01
+Kevin White,33,M,86.1,183,19.9,Fat Loss,2024-02-15
+Rachel Thompson,36,F,69.2,167,22.6,Maintenance,2024-01-01
+Rachel Thompson,36,F,69.4,167,22.7,Maintenance,2024-01-15
+Rachel Thompson,36,F,69.1,167,22.5,Maintenance,2024-02-01
+Rachel Thompson,36,F,69.3,167,22.6,Maintenance,2024-02-15
+Tom Jackson,48,M,91.7,181,23.8,Fat Loss,2024-01-01
+Tom Jackson,48,M,91.1,181,23.2,Fat Loss,2024-01-15
+Tom Jackson,48,M,90.6,181,22.7,Fat Loss,2024-02-01
+Tom Jackson,48,M,90.2,181,22.3,Fat Loss,2024-02-15
+Nicole Harris,25,F,62.8,159,19.7,Muscle Gain,2024-01-01
+Nicole Harris,25,F,63.4,159,20.0,Muscle Gain,2024-01-15
+Nicole Harris,25,F,63.9,159,20.3,Muscle Gain,2024-02-01
+Nicole Harris,25,F,64.3,159,20.6,Muscle Gain,2024-02-15
+Mark Clark,42,M,84.9,176,20.5,Maintenance,2024-01-01
+Mark Clark,42,M,85.1,176,20.6,Maintenance,2024-01-15
+Mark Clark,42,M,84.8,176,20.4,Maintenance,2024-02-01
+Mark Clark,42,M,85.0,176,20.5,Maintenance,2024-02-15
+Amanda Lewis,30,F,67.3,164,21.8,Fat Loss,2024-01-01
+Amanda Lewis,30,F,66.7,164,21.2,Fat Loss,2024-01-15
+Amanda Lewis,30,F,66.2,164,20.7,Fat Loss,2024-02-01
+Amanda Lewis,30,F,65.8,164,20.3,Fat Loss,2024-02-15
+Steven Walker,39,M,89.4,185,21.7,Fat Loss,2024-01-01
+Steven Walker,39,M,88.8,185,21.1,Fat Loss,2024-01-15
+Steven Walker,39,M,88.3,185,20.6,Fat Loss,2024-02-01
+Steven Walker,39,M,87.9,185,20.2,Fat Loss,2024-02-15
+Jessica Hall,28,F,71.6,169,23.5,Muscle Gain,2024-01-01
+Jessica Hall,28,F,72.2,169,23.8,Muscle Gain,2024-01-15
+Jessica Hall,28,F,72.7,169,24.1,Muscle Gain,2024-02-01
+Jessica Hall,28,F,73.1,169,24.4,Muscle Gain,2024-02-15
+Brian Young,46,M,93.2,182,24.3,Maintenance,2024-01-01
+Brian Young,46,M,93.4,182,24.4,Maintenance,2024-01-15
+Brian Young,46,M,93.1,182,24.2,Maintenance,2024-02-01
+Brian Young,46,M,93.3,182,24.3,Maintenance,2024-02-15
+Michelle King,34,F,68.7,166,22.9,Fat Loss,2024-01-01
+Michelle King,34,F,68.1,166,22.3,Fat Loss,2024-01-15
+Michelle King,34,F,67.6,166,21.8,Fat Loss,2024-02-01
+Michelle King,34,F,67.2,166,21.4,Fat Loss,2024-02-15
+Daniel Wright,37,M,81.5,178,19.2,Muscle Gain,2024-01-01
+Daniel Wright,37,M,82.1,178,19.5,Muscle Gain,2024-01-15
+Daniel Wright,37,M,82.6,178,19.8,Muscle Gain,2024-02-01
+Daniel Wright,37,M,83.0,178,20.1,Muscle Gain,2024-02-15
+Laura Turner,31,F,73.8,171,24.2,Maintenance,2024-01-01
+Laura Turner,31,F,74.0,171,24.3,Maintenance,2024-01-15
+Laura Turner,31,F,73.7,171,24.1,Maintenance,2024-02-01
+Laura Turner,31,F,73.9,171,24.2,Maintenance,2024-02-15
+Paul Hill,44,M,86.3,179,21.6,Fat Loss,2024-01-01
+Paul Hill,44,M,85.7,179,21.0,Fat Loss,2024-01-15
+Paul Hill,44,M,85.2,179,20.5,Fat Loss,2024-02-01
+Paul Hill,44,M,84.8,179,20.1,Fat Loss,2024-02-15
+Karen Green,29,F,65.9,162,20.1,Muscle Gain,2024-01-01
+Karen Green,29,F,66.5,162,20.4,Muscle Gain,2024-01-15
+Karen Green,29,F,67.0,162,20.7,Muscle Gain,2024-02-01
+Karen Green,29,F,67.4,162,21.0,Muscle Gain,2024-02-15
+Ryan Adams,35,M,79.6,174,18.4,Maintenance,2024-01-01
+Ryan Adams,35,M,79.8,174,18.5,Maintenance,2024-01-15
+Ryan Adams,35,M,79.5,174,18.3,Maintenance,2024-02-01
+Ryan Adams,35,M,79.7,174,18.4,Maintenance,2024-02-15
+Stephanie Baker,33,F,70.4,168,23.1,Fat Loss,2024-01-01
+Stephanie Baker,33,F,69.8,168,22.5,Fat Loss,2024-01-15
+Stephanie Baker,33,F,69.3,168,22.0,Fat Loss,2024-02-01
+Stephanie Baker,33,F,68.9,168,21.6,Fat Loss,2024-02-15
+Jason Nelson,40,M,88.7,181,22.0,Muscle Gain,2024-01-01
+Jason Nelson,40,M,89.3,181,22.3,Muscle Gain,2024-01-15
+Jason Nelson,40,M,89.8,181,22.6,Muscle Gain,2024-02-01
+Jason Nelson,40,M,90.2,181,22.9,Muscle Gain,2024-02-15
+Heather Carter,27,F,64.1,160,19.9,Maintenance,2024-01-01
+Heather Carter,27,F,64.3,160,20.0,Maintenance,2024-01-15
+Heather Carter,27,F,64.0,160,19.8,Maintenance,2024-02-01
+Heather Carter,27,F,64.2,160,19.9,Maintenance,2024-02-15</content>
+<parameter name="filePath">c:\Users\moham\OneDrive\Desktop\DA project\MGD\MGD console\MGD console\data\perfect_sample.csv

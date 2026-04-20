@@ -1,0 +1,31 @@
+MGD CONSOLE - PROJECT FILE CHEAT SHEET
+=======================================
+
+CORE APPLICATION (ROOT)
+-----------------------
+- index.html: Main application entry point; defines layout and coordinates all CSS/JS.
+- Run_On_Laptop.bat: One-click script to start a local server and open the app on any Windows machine.
+- README.md: Comprehensive guide for setup, usage, and understanding the project structure.
+
+DESIGN & STYLING (css/)
+-----------------------
+- css/theme.css: Manages the "Sage Green" pastel color scheme and modern typography tokens.
+- css/layout.css: Controls the layout grid, sidebar positioning, and responsive dashboard structure.
+- css/components.css: Styles for specific UI elements like buttons, cards, and explanatory tech notes.
+
+LOGIC & ALGORITHMS (js/)
+------------------------
+- js/engine.js: The core technical "brain" that cleans data and implements Merge Sort / Binary Search.
+- js/app.js: The interface controller that manages user input, view switching, and connects the engine to the UI.
+- js/charts.js: Handles all data visualization rendering via the Chart.js library onto HTML5 canvases.
+- js/papaparse.min.js: A professional utility to parse CSV data directly in-browser for privacy and speed.
+
+SUPPORT SCRIPTS (scripts/)
+--------------------------
+- scripts/gen_medium_data.ps1: PowerShell script to generate high-volume "dirty" data for cleaning demos.
+- scripts/gen_medium_data.py: Python version of the data generator for cross-platform flexibility.
+
+PROJECT REPOSITORY (FOLDERS)
+----------------------------
+- data/: Stores all CSV datasets (Sample, Medium, Large) used for testing features.
+- docs/: Professional project documentation including Requirements (PRD) and Architecture (SAD) docs.
