@@ -3,35 +3,48 @@
    ========================================================================== */
 @media print {
     body {
-        background: white;
+        background: white !important;
+        color: black !important;
         margin: 0;
         padding: 0;
     }
 
-    .sidebar {
+    .sidebar,
+    .audio-control,
+    .view-switcher,
+    button,
+    .feature-note,
+    .no-print {
         display: none !important;
     }
 
     .main-content {
         margin-left: 0 !important;
-        padding: 0 !important;
+        padding: 10mm !important;
         width: 100% !important;
     }
 
-    button,
-    .feature-note,
-    .insights-list {
-        display: none !important;
-    }
-
     .header {
-        margin-bottom: 24px !important;
-        text-align: center;
+        margin-bottom: 20px !important;
+        text-align: left;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
     }
 
-    .chart-card {
+    .print-logo-banner {
+        display: flex !important;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .chart-card,
+    .metric-card,
+    .practical-card {
         break-inside: avoid;
-        border: 1px solid #ccc;
+        border: 2px solid #000 !important;
+        box-shadow: none !important;
+        margin-bottom: 16px !important;
     }
 }
 
@@ -48,32 +61,113 @@
 }
 
 .sidebar {
-    width: 240px;
+    width: 270px;
     background-color: var(--bg-card);
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    border-right: 2px solid var(--border-color);
     display: flex;
     flex-direction: column;
     padding: var(--space-3) var(--space-2);
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
     z-index: 10;
+    flex-shrink: 0;
 }
 
 .sidebar-header {
-    margin-bottom: var(--space-4);
-    padding: 0 var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    padding: 0 var(--space-1) var(--space-2) var(--space-1);
+    border-bottom: 2px solid var(--border-subtle);
+}
+
+.sidebar-brand-logo {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
 }
 
 .sidebar-header h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--primary-dark);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
     letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.sidebar-header small {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.sidebar-nav-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.nav-section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: var(--space-2) 0 var(--space-1) var(--space-2);
 }
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: 4px;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    border-top: 2px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-controls-row {
+    display: flex;
+    gap: 6px;
+}
+
+.sidebar-btn-sm {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-main);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sidebar-btn-sm:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary-dark);
+}
+
+.sidebar-btn-sm.active {
+    background: var(--primary);
+    border-color: var(--primary-dark);
+    color: var(--text-inverse);
 }
 
 .main-content {
@@ -85,19 +179,18 @@
 
 .view {
     display: block;
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.25s ease-in-out;
 }
 
 .view.hidden {
-    display: none;
+    display: none !important;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(6px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -105,24 +198,58 @@
 }
 
 .header {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
 }
 
 .header h1 {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 1.85rem;
+    font-weight: 800;
     margin-bottom: 4px;
+    color: var(--text-primary);
 }
 
 .header .subtitle {
     color: var(--text-secondary);
-    font-size: 1rem;
+    font-size: 0.95rem;
+}
+
+/* Hero / Welcome Banner */
+.welcome-hero-banner {
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--primary-lightest) 100%);
+    border: 2px solid var(--primary-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    box-shadow: var(--shadow-soft);
+}
+
+.welcome-hero-text h3 {
+    font-size: 1.25rem;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+}
+
+.welcome-hero-text p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.welcome-hero-mascot {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
 /* Grid Layouts */
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
     gap: var(--space-3);
     margin-bottom: var(--space-4);
 }
@@ -130,9 +257,21 @@
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* Two column grid requirement */
     gap: var(--space-3);
     margin-bottom: var(--space-4);
+}
+
+.charts-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+@media (max-width: 1200px) {
+    .charts-grid-3 {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 1024px) {

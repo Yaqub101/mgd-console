@@ -1,70 +1,119 @@
 /* css/theme.css */
 :root {
-    /* Primary Theme: Sage Green */
-    --primary: #8da488;
-    --primary-light: #e0eee0;
-    --primary-dark: #5c7059;
+    /* Primary Theme: Deep High-Contrast Forest/Emerald Green (Older Monitor Safe) */
+    --primary: #15803d;          /* Deep rich green - visible on washed out TN panels */
+    --primary-light: #dcfce7;    /* Crisp light green tint */
+    --primary-lightest: #f0fdf4;
+    --primary-dark: #14532d;     /* Deep forest green for high contrast text */
+    --primary-border: #166534;
 
-    /* Secondary Colors */
-    --accent: #d8b88d;
-    /* Complementary pastel */
+    /* Secondary & Accent Colors - Carefully selected for high chrominance */
+    --accent: #b45309;           /* Amber/Bronze with strong contrast against white */
+    --accent-light: #fef3c7;
+    --accent-dark: #78350f;
 
-    /* Semantic Colors */
-    --success: #6cc180;
-    --warning: #f1b04c;
-    --danger: #e2726e;
-    --info: #4eb5d2;
+    /* Semantic Colors - High Contrast WCAG AA / AAA compliant */
+    --success: #15803d;          /* #15803d gives 4.8:1+ on light bg */
+    --success-bg: #dcfce7;
+    --warning: #b45309;          /* Deep amber, never neon yellow */
+    --warning-bg: #fef3c7;
+    --danger: #b91c1c;           /* Deep crimson, stark contrast */
+    --danger-bg: #fee2e2;
+    --info: #0369a1;             /* Oceanic deep blue */
+    --info-bg: #e0f2fe;
+    --purple: #6d28d9;
+    --purple-bg: #ede9fe;
 
-    /* Backgrounds */
-    --bg-main: #fcfdfe;
-    /* Off-white */
-    --bg-card: #ffffff;
-    /* White cards */
-    --bg-dark: #1f2937;
+    /* Backgrounds - Solid, high-definition contrast */
+    --bg-main: #f8fafc;          /* Crisp light slate */
+    --bg-card: #ffffff;          /* Pure white */
+    --bg-card-subtle: #f1f5f9;   /* Discernible gray on old monitors */
+    --bg-dark: #0f172a;
 
-    /* Typography Colors */
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
-    --text-muted: #9ca3af;
+    /* Borders - High-visibility for older monitors where faint borders disappear */
+    --border-color: #cbd5e1;     /* 1.5px/2px slate border */
+    --border-strong: #94a3b8;    /* Strong outline */
+    --border-subtle: #e2e8f0;
+
+    /* Typography - Deep charcoal/black to eliminate fuzzy text on older displays */
+    --text-primary: #0f172a;     /* Pure readable deep slate */
+    --text-secondary: #334155;   /* 7.5:1 contrast ratio */
+    --text-muted: #64748b;       /* 4.6:1 contrast ratio */
     --text-inverse: #ffffff;
 
+    /* Chart Colors (Designed to be distinct on 6-bit TN panels & grayscale) */
+    --chart-1: #1d4ed8;          /* High contrast Royal Blue */
+    --chart-2: #15803d;          /* Deep Emerald */
+    --chart-3: #b45309;          /* Amber */
+    --chart-4: #b91c1c;          /* Crimson */
+    --chart-5: #6d28d9;          /* Purple */
+    --chart-6: #0f766e;          /* Teal */
+    --chart-7: #ea580c;          /* Orange */
+
     /* Spacing System (8px base) */
-    --space-1: 0.5rem;
-    /* 8px */
-    --space-2: 1rem;
-    /* 16px */
-    --space-3: 1.5rem;
-    /* 24px */
-    --space-4: 2rem;
-    /* 32px */
-    --space-5: 2.5rem;
-    /* 40px */
-    --space-6: 3rem;
-    /* 48px */
+    --space-1: 0.5rem;   /* 8px */
+    --space-2: 1rem;     /* 16px */
+    --space-3: 1.5rem;   /* 24px */
+    --space-4: 2rem;     /* 32px */
+    --space-5: 2.5rem;   /* 40px */
+    --space-6: 3rem;     /* 48px */
 
     /* Radii */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    /* Defined from PRD */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
     --radius-full: 9999px;
 
-    /* Shadows */
-    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
-    /* Soft low opacity blur */
-    --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
+    /* Shadows with solid outline fallback for older monitors */
+    --shadow-soft: 0 2px 6px rgba(15, 23, 42, 0.08);
+    --shadow-hover: 0 6px 16px rgba(15, 23, 42, 0.12);
 
     /* Fonts */
-    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Older Monitor / High-Contrast Mode Preset */
+[data-contrast="high"] {
+    --primary: #000000;
+    --primary-light: #e5e7eb;
+    --primary-dark: #000000;
+    --primary-border: #000000;
+    --bg-main: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-subtle: #f3f4f6;
+    --border-color: #000000;
+    --border-strong: #000000;
+    --text-primary: #000000;
+    --text-secondary: #111827;
+    --text-muted: #1f2937;
+    --shadow-soft: none;
+    --shadow-hover: none;
 }
 
 [data-theme="dark"] {
-    --bg-main: #0f172a;
-    --bg-card: #1e293b;
+    --bg-main: #0b1120;
+    --bg-card: #151e2e;
+    --bg-card-subtle: #1e293b;
+    --border-color: #334155;
+    --border-strong: #475569;
+    --border-subtle: #1e293b;
     --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --primary-light: #334155;
-    --primary-lightest: #1e293b;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --primary: #22c55e;
+    --primary-light: #14532d;
+    --primary-dark: #86efac;
+    --primary-border: #22c55e;
+}
+
+[data-theme="dark"][data-contrast="high"] {
+    --bg-main: #000000;
+    --bg-card: #000000;
+    --border-color: #ffffff;
+    --border-strong: #ffffff;
+    --text-primary: #ffffff;
+    --text-secondary: #e5e7eb;
+    --text-muted: #d1d5db;
 }
 
 * {
@@ -81,14 +130,10 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: -0.015em;
 }
 
 .text-muted {
@@ -99,6 +144,14 @@ h6 {
     color: var(--success);
 }
 
+.text-warning {
+    color: var(--warning);
+}
+
 .text-danger {
     color: var(--danger);
+}
+
+.text-info {
+    color: var(--info);
 }
