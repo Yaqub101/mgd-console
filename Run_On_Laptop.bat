@@ -3,7 +3,7 @@ SETLOCAL
 SET PORT=8080
 
 echo ==========================================================
-echo           MGD CONSOLE - LOCAL SERVER
+echo       MYGYMDIARY CONSOLE - LOCAL SERVER
 echo ==========================================================
 echo.
 echo Starting server at http://localhost:%PORT%
@@ -32,6 +32,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
                 elseif ($ext -eq '.css') { $response.ContentType = 'text/css' } ^
                 elseif ($ext -eq '.js') { $response.ContentType = 'application/javascript' } ^
                 elseif ($ext -eq '.csv') { $response.ContentType = 'text/csv' } ^
+                elseif ($ext -eq '.png') { $response.ContentType = 'image/png' } ^
+                elseif ($ext -eq '.mp3') { $response.ContentType = 'audio/mpeg' } ^
+                $response.AddHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); ^
+                $response.AddHeader('Pragma', 'no-cache'); ^
+                $response.AddHeader('Expires', '0'); ^
                 $content = [System.IO.File]::ReadAllBytes($filePath); ^
                 $response.OutputStream.Write($content, 0, $content.Length); ^
             } else { ^

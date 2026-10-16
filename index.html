@@ -1,14 +1,896 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=MGD%20console/index.html">
-    <title>Redirecting to MyGymDiary Console...</title>
-    <script>
-        window.location.replace("MGD%20console/index.html");
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyGymDiary Console - Data Storytelling & Visualization</title>
+    
+    <!-- Cache Control to prevent browser loading stale cache -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- Favicon using Logo Asset -->
+    <link rel="icon" type="image/png" href="Assets/logo.png?v=2.6">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- PapaParse for standard CSV parsing (Local Download) -->
+    <script src="js/papaparse.min.js?v=2.6"></script>
+
+    <!-- Core Styles with High-Contrast Older-Monitor Support -->
+    <link rel="stylesheet" href="css/theme.css?v=2.6">
+    <link rel="stylesheet" href="css/layout.css?v=2.6">
+    <link rel="stylesheet" href="css/components.css?v=2.6">
 </head>
-<body style="font-family: sans-serif; text-align: center; padding: 50px;">
-    <h2>Redirecting to <a href="MGD%20console/index.html">MyGymDiary Console</a>...</h2>
+
+<body>
+    <div id="app" class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="Assets/logo.png" alt="MyGymDiary Logo" class="sidebar-brand-logo">
+                <div>
+                    <h2>MyGymDiary</h2>
+                    <small>Console • Lab Suite</small>
+                </div>
+            </div>
+
+            <div class="sidebar-nav-container">
+                <div class="nav-section-title">Core Analytics</div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" data-target="dashboard">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item" data-target="upload">
+                        <i data-lucide="upload-cloud"></i>
+                        <span>Upload & Clean</span>
+                    </a>
+                    <a href="#" class="nav-item" data-target="clients">
+                        <i data-lucide="users"></i>
+                        <span>Client Roster</span>
+                    </a>
+                    <a href="#" class="nav-item" data-target="prediction">
+                        <i data-lucide="target"></i>
+                        <span>Goal Prediction</span>
+                    </a>
+                </nav>
+
+                <div class="nav-section-title" style="margin-top: 14px;">Academic Lab Suite</div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item" data-target="practicals" style="border-left: 3px solid var(--primary);">
+                        <i data-lucide="book-open"></i>
+                        <span>Lab Practicals</span>
+                        <span class="nav-badge">P1-P10</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Sidebar Footer Controls (Display settings & sound) -->
+            <div class="sidebar-footer">
+                <div class="sidebar-controls-row">
+                    <button id="btn-toggle-contrast" class="sidebar-btn-sm" title="Boost contrast and border weight for older CCFL/TN displays">
+                        <i data-lucide="monitor"></i>
+                        <span id="contrast-label">Display: Std</span>
+                    </button>
+                    <button id="btn-toggle-sound" class="sidebar-btn-sm active" title="Toggle audio feedback and cues">
+                        <i data-lucide="volume-2" id="sound-icon"></i>
+                        <span id="sound-label">Audio: ON</span>
+                    </button>
+                </div>
+                <button class="icon-button" onclick="window.clearAllData()" style="width: 100%; justify-content: center; color: var(--danger); font-size: 0.8rem; border: 1.5px solid var(--danger);">
+                    <i data-lucide="trash-2" style="width: 14px; height: 14px; margin-right: 4px;"></i> Clear Stored Data
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- Print Logo Banner (Hidden on screen, shown in print) -->
+            <div class="print-logo-banner" style="display: none;">
+                <img src="Assets/logo.png" style="width: 48px; height: 48px;" alt="Logo">
+                <div>
+                    <h2 style="margin: 0; color: #15803d;">MyGymDiary Console</h2>
+                    <p style="margin: 0; font-size: 0.85rem; color: #333;">Data Storytelling & Descriptive Analytics Executive Report</p>
+                </div>
+            </div>
+
+            <!-- ================================================================
+                 1. UPLOAD VIEW (P7: Data Cleaning & Ingestion)
+                 ================================================================ -->
+            <section id="view-upload" class="view hidden">
+                <div class="header">
+                    <h1>Upload & Clean Dataset</h1>
+                    <p class="subtitle">Import client CSV data to validate schema, perform outlier correction, and generate descriptive stories.</p>
+                </div>
+
+                <div class="feature-note">
+                    <i data-lucide="info"></i>
+                    <div><strong>PapaParse Engine:</strong> Streaming in-memory parsing with automatic type standardization</div>
+                </div>
+
+                <div class="content-container">
+                    <div class="upload-box" id="drop-zone">
+                        <img src="Assets/dea03dca-56f0-46cb-9382-057940d4f1ba.png" style="width: 72px; height: 72px; object-fit: contain; margin-bottom: 4px;" alt="Waving Mascot">
+                        <h3>Drop your client CSV here</h3>
+                        <p>Supports .csv format with Name, Age, Gender, Weight, Height, Goal (and optional BodyFat, Date)</p>
+                        <button class="primary-button" style="margin-top: 8px;">
+                            <i data-lucide="file-up"></i> Browse Files
+                        </button>
+                        <input type="file" id="csv-file-input" accept=".csv" class="hidden-input">
+                    </div>
+
+                    <!-- Quick Sample Data Loader -->
+                    <div class="sample-dataset-bar">
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary);">Want to test immediately?</span>
+                        <button id="btn-load-sample" class="secondary-button" style="padding: 6px 12px; font-size: 0.82rem;">
+                            <i data-lucide="play-circle"></i> Load Perfect Sample Data (40 Clients with Time-Series)
+                        </button>
+                    </div>
+
+                    <div id="upload-status" class="status-message hidden"></div>
+
+                    <!-- Cleaning Review Section (P7 Verification) -->
+                    <div id="cleaning-review" class="review-container hidden">
+                        <div class="card" style="padding: var(--space-4); margin-top: var(--space-3); border-color: var(--primary);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2);">
+                                <h3 style="color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                                    <i data-lucide="shield-check"></i> Practical 7 Data Quality & Cleaning Audit
+                                </h3>
+                                <span class="badge badge-success">Schema Validated</span>
+                            </div>
+                            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: var(--space-3);">
+                                Automatic outlier detection (IQR bounds), duplicate clustering into weight history timelines, and missing value imputation have been applied.
+                            </p>
+                            <div class="review-grid">
+                                <div class="review-stat">
+                                    <span class="label">Total Raw Records</span>
+                                    <span class="value" id="stat-total-raw">0</span>
+                                </div>
+                                <div class="review-stat">
+                                    <span class="label">Duplicates Clustered</span>
+                                    <span class="value text-warning" id="stat-duplicates">0</span>
+                                </div>
+                                <div class="review-stat">
+                                    <span class="label">Outliers Adjusted</span>
+                                    <span class="value text-info" id="stat-outliers">0</span>
+                                </div>
+                                <div class="review-stat">
+                                    <span class="label">Auto-Imputed Goals</span>
+                                    <span class="value" id="stat-missing">0</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: var(--space-3);">
+                                <button id="btn-approve-dashboard" class="primary-button">
+                                    <i data-lucide="check"></i> Approve & Open Dashboard
+                                </button>
+                                <button class="secondary-button" onclick="switchView('practicals')">
+                                    <i data-lucide="book-open"></i> Go to Lab Practicals Hub
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 2. DASHBOARD VIEW (Executive Overview & Core Visualizations)
+                 ================================================================ -->
+            <section id="view-dashboard" class="view hidden">
+                <!-- Welcome Hero Banner -->
+                <div class="welcome-hero-banner">
+                    <div class="welcome-hero-text">
+                        <h3>Welcome to MyGymDiary Console</h3>
+                        <p>Interactive Data Storytelling & Descriptive Analytics System designed for coaches, facility directors, and data science students.</p>
+                        <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+                            <button class="primary-button" style="padding: 6px 12px; font-size: 0.8rem;" onclick="switchView('practicals')">
+                                <i data-lucide="sparkles"></i> Open Lab Practicals Hub (P1-P10)
+                            </button>
+                            <button class="secondary-button" style="padding: 6px 12px; font-size: 0.8rem;" onclick="switchView('prediction')">
+                                <i data-lucide="target"></i> Goal Prediction Tool
+                            </button>
+                        </div>
+                    </div>
+                    <img src="Assets/dea03dca-56f0-46cb-9382-057940d4f1ba.png" alt="Mascot Waving" class="welcome-hero-mascot">
+                </div>
+
+                <div class="header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h1>Executive Dashboard</h1>
+                        <p class="subtitle">Real-time metrics, demographic distributions, and automated narrative alerts.</p>
+                    </div>
+                    <div style="display: flex; gap: var(--space-2);">
+                        <button class="secondary-button" onclick="window.print()">
+                            <i data-lucide="printer"></i> Save as PDF Report
+                        </button>
+                        <button class="primary-button" onclick="exportToCSV()">
+                            <i data-lucide="download"></i> Export Cleaned CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h4 class="metric-title">Active Members</h4>
+                        <div class="metric-value" id="metric-total-clients">--</div>
+                        <div class="metric-subtitle">Processed & deduplicated</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4 class="metric-title">Facility Average BMI</h4>
+                        <div class="metric-value" id="metric-avg-bmi">--</div>
+                        <div class="metric-subtitle">Clinical threshold: 25.0</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4 class="metric-title">Average Body Weight</h4>
+                        <div class="metric-value" id="metric-avg-weight">--</div>
+                        <div class="metric-subtitle">Kilograms (kg)</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4 class="metric-title">Leading Fitness Goal</h4>
+                        <div class="metric-value" id="metric-common-goal" style="font-size: 1.5rem; word-break: break-word;">--</div>
+                        <div class="metric-subtitle">Highest client concentration</div>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4><i data-lucide="pie-chart" style="width: 16px; height: 16px; color: var(--primary);"></i> Gender Breakdown</h4>
+                            <span class="badge badge-info">Demographics</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="gender-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4><i data-lucide="bar-chart-2" style="width: 16px; height: 16px; color: var(--primary);"></i> BMI Stratification</h4>
+                            <span class="badge badge-success">Health Risk</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="bmi-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4><i data-lucide="bar-chart-horizontal" style="width: 16px; height: 16px; color: var(--primary);"></i> Primary Ambitions</h4>
+                            <span class="badge badge-purple">Goal Clusters</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="goal-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4><i data-lucide="activity" style="width: 16px; height: 16px; color: var(--primary);"></i> Weight Distribution (10kg Bins)</h4>
+                            <span class="badge badge-warning">Empirical Spread</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="weight-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Correlation & Age Row -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4><i data-lucide="trending-up" style="width: 16px; height: 16px; color: var(--primary);"></i> Age Demographics Curve</h4>
+                            <span class="badge badge-info">Age Brackets</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="age-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4><i data-lucide="scatter-chart" style="width: 16px; height: 16px; color: var(--primary);"></i> Height vs Weight Correlation</h4>
+                            <span class="badge badge-success">Biometric Scatter</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="scatter-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Automated Insights Box with Tip Mascot -->
+                <div class="insights-container">
+                    <div class="insights-header">
+                        <div class="insights-header-left">
+                            <img src="Assets/9f0f7259-9a91-4fd3-8c2e-e3d7937b9e80.png" alt="Tip Mascot" class="insights-mascot-tip">
+                            <span>Automated Storytelling Insights</span>
+                        </div>
+                        <span class="badge badge-success" style="font-size: 0.75rem;">Rule Engine Active</span>
+                    </div>
+                    <div id="insights-list" class="insights-list">
+                        <div class="insight-item placeholder">Upload or load data to generate automated storytelling insights.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 3. LAB PRACTICALS SUITE (Practicals 1 to 10 Interactive Hub)
+                 ================================================================ -->
+            <section id="view-practicals" class="view hidden">
+                <!-- Academic Course Badge & Header -->
+                <div class="practical-header-card">
+                    <div>
+                        <span class="practical-tag">Academic Workbook • Semester IX</span>
+                        <h2 style="font-size: 1.5rem; margin: 4px 0;">Data Story Telling & Visualization Lab (CSI24PCP501)</h2>
+                        <p style="color: var(--text-secondary); font-size: 0.88rem;">
+                            School of Engineering & Technology, MGMU • Integrated practical implementation suite covering all 10 syllabus practicals.
+                        </p>
+                    </div>
+                    <img src="Assets/learn.png" alt="Learn Mascot" class="practical-mascot" style="width: 76px; height: 76px;">
+                </div>
+
+                <!-- Practicals Navigation Tabs -->
+                <div class="practicals-hub-nav" id="practical-nav-tabs">
+                    <button class="practical-tab-btn active" data-ptarget="p1"><i data-lucide="target"></i> P1: Stake & Big Idea</button>
+                    <button class="practical-tab-btn" data-ptarget="p2"><i data-lucide="users"></i> P2: Audience & Tone</button>
+                    <button class="practical-tab-btn" data-ptarget="p3"><i data-lucide="eye-off"></i> P3: Decluttering</button>
+                    <button class="practical-tab-btn" data-ptarget="p4"><i data-lucide="alert-triangle"></i> P4: Incident Story</button>
+                    <button class="practical-tab-btn" data-ptarget="p5"><i data-lucide="video"></i> P5: Video Storyteller</button>
+                    <button class="practical-tab-btn" data-ptarget="p6"><i data-lucide="sparkles"></i> P6: Gym Wrapped</button>
+                    <button class="practical-tab-btn" data-ptarget="p7"><i data-lucide="database"></i> P7: Data Quality Profiler</button>
+                    <button class="practical-tab-btn" data-ptarget="p8"><i data-lucide="bar-chart"></i> P8: Dynamic Histogram</button>
+                    <button class="practical-tab-btn" data-ptarget="p9"><i data-lucide="layers"></i> P9: Comparative Box Plot</button>
+                    <button class="practical-tab-btn" data-ptarget="p10"><i data-lucide="pie-chart"></i> P10: Pie vs Bar Arena</button>
+                </div>
+
+                <!-- ================== P1: Stakeholder Story & Big Idea ================== -->
+                <div id="psection-p1" class="practical-section">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <h3 style="margin-bottom: 8px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="award"></i> Practical 1: Stakeholder Analysis & "Big Idea" Formation
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-3);">
+                            Before creating visualizations, you must identify what is at stake (benefits of action vs. risks of inaction) and synthesize a single actionable "Big Idea".
+                        </p>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-bottom: var(--space-3);">
+                            <div class="card" style="padding: var(--space-3); background: var(--success-bg); border-color: var(--success);">
+                                <h4 style="color: #14532d; margin-bottom: 6px;"><i data-lucide="trending-up"></i> Benefits of Action</h4>
+                                <p id="p1-benefits" style="font-size: 0.88rem; color: #14532d;">Loading benefits analysis...</p>
+                            </div>
+                            <div class="card" style="padding: var(--space-3); background: var(--danger-bg); border-color: var(--danger);">
+                                <h4 style="color: #7f1d1d; margin-bottom: 6px;"><i data-lucide="alert-octagon"></i> Risks of Inaction</h4>
+                                <p id="p1-risks" style="font-size: 0.88rem; color: #7f1d1d;">Loading risks analysis...</p>
+                            </div>
+                        </div>
+
+                        <!-- Big Idea Banner -->
+                        <div class="card" style="padding: var(--space-3); background: var(--bg-card-subtle); border-left: 6px solid var(--primary);">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between;">
+                                <span>The Big Idea (Single Impactful Action Statement)</span>
+                                <button id="btn-copy-bigidea" class="secondary-button" style="padding: 4px 8px; font-size: 0.75rem;">
+                                    <i data-lucide="copy"></i> Copy
+                                </button>
+                            </h4>
+                            <p id="p1-bigidea" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); line-height: 1.4;">
+                                Loading dataset-specific Big Idea...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== P2: Audience, Mechanism & Tone ================== -->
+                <div id="psection-p2" class="practical-section hidden">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <h3 style="margin-bottom: 8px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="sliders"></i> Practical 2: Audience Adaptation, Tone & Visual Selection
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-3);">
+                            Explore how visualization choices, narrative tone, and presentation mechanism change depending on whether communicating to Executives, Coaches, or Members.
+                        </p>
+
+                        <div style="display: flex; gap: var(--space-3); margin-bottom: var(--space-3); flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 220px;">
+                                <label style="display: block; font-weight: 700; font-size: 0.82rem; margin-bottom: 4px;">Target Audience</label>
+                                <select id="p2-audience-select" class="form-control" style="width: 100%;">
+                                    <option value="Executive">Executive / Gym Owner (ROI & Churn)</option>
+                                    <option value="Trainer">Trainer / Coach (Biometrics & Plans)</option>
+                                    <option value="Member">Gym Member (Motivation & Milestones)</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1; min-width: 220px;">
+                                <label style="display: block; font-weight: 700; font-size: 0.82rem; margin-bottom: 4px;">Narrative Tone</label>
+                                <select id="p2-tone-select" class="form-control" style="width: 100%;">
+                                    <option value="Informative">Informative (Neutral & Objective)</option>
+                                    <option value="Persuasive">Persuasive (Action-driven & Urgent)</option>
+                                    <option value="Formal">Formal / Clinical (Medical WHO Thresholds)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Adaptation Card -->
+                        <div class="card" style="padding: var(--space-3); background: var(--bg-card-subtle); border-color: var(--primary-border);">
+                            <h4 id="p2-profile-title" style="color: var(--primary); margin-bottom: 4px;">Audience Profile</h4>
+                            <p id="p2-takeaway" style="font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">Select an audience above...</p>
+                            <div style="display: flex; gap: 10px; font-size: 0.82rem; color: var(--text-muted);">
+                                <span id="p2-rec-visual"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> Recommended Visual</span>
+                                <span id="p2-tone-label"><i data-lucide="message-square" style="width: 14px; height: 14px;"></i> Tone Mode</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== P3: Decluttering & Pre-Attentive Visuals ================== -->
+                <div id="psection-p3" class="practical-section hidden">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <h3 style="margin-bottom: 8px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="wand-2"></i> Practical 3: Clutter Elimination & Pre-Attentive Highlighting
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-3);">
+                            Compare an intentionally cluttered, high-cognitive-load chart with a decluttered version that leverages pre-attentive color highlighting to guide viewer attention.
+                        </p>
+
+                        <div class="clutter-toggle-bar">
+                            <span style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">
+                                <i data-lucide="eye" style="width: 16px; height: 16px; margin-right: 4px;"></i> Side-by-Side Clutter Comparison
+                            </span>
+                            <span class="badge badge-warning">Cognitive Load Lesson</span>
+                        </div>
+
+                        <div class="split-view-container">
+                            <div class="chart-card" style="border-color: var(--danger);">
+                                <h4 style="color: var(--danger);"><i data-lucide="x-circle"></i> Cluttered & Distracting (High Noise)</h4>
+                                <div class="chart-container">
+                                    <canvas id="cluttered-demo-chart"></canvas>
+                                </div>
+                                <p style="font-size: 0.78rem; color: var(--danger); margin-top: 8px;">
+                                    Issues: Heavy red/blue gridlines, distracting rainbow fills, harsh black border, tilted text, high cognitive effort.
+                                </p>
+                            </div>
+                            <div class="chart-card" style="border-color: var(--primary);">
+                                <h4 style="color: var(--primary);"><i data-lucide="check-circle"></i> Decluttered & Pre-Attentive (Clean)</h4>
+                                <div class="chart-container">
+                                    <canvas id="clean-demo-chart"></canvas>
+                                </div>
+                                <p style="font-size: 0.78rem; color: var(--primary-dark); margin-top: 8px;">
+                                    Solution: Clean background, neutral slate for context, vibrant green pre-attentive accent on dominant cohort.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== P4: Incident Data Story ================== -->
+                <div id="psection-p4" class="practical-section hidden">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <h3 style="margin-bottom: 8px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="file-question"></i> Practical 4: Operational Incident Deep-Dive Story
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-3);">
+                            Structured incident analysis analogous to vehicle rental usage / bike-share bunching incidents, applied to athletic attendance and retention drops.
+                        </p>
+
+                        <div class="card" style="padding: var(--space-3); margin-bottom: var(--space-3); border-color: var(--warning);">
+                            <h4 id="p4-incident-title" style="color: var(--warning); margin-bottom: 4px;">Incident Investigation</h4>
+                            <p id="p4-incident-desc" style="font-size: 0.9rem; color: var(--text-secondary);">Loading incident overview...</p>
+                        </div>
+
+                        <div class="chart-card" style="margin-bottom: var(--space-3);">
+                            <h4><i data-lucide="line-chart"></i> 12-Week Member Retention Dropoff Curve (Incident Timeline)</h4>
+                            <div class="chart-container">
+                                <canvas id="incident-timeline-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <div id="p4-observations" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-2);">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== P5: Video Storyteller / Presentation Mode ================== -->
+                <div id="psection-p5" class="practical-section hidden">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+                            <div>
+                                <h3 style="margin-bottom: 4px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                                    <i data-lucide="video"></i> Practical 5: 3-Part Video Presentation & Narration Prompter
+                                </h3>
+                                <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                                    Follows Lab Manual requirements for recording a 5-minute data story video (.mov/.mp4) with Introduction, Body, and Conclusion.
+                                </p>
+                            </div>
+                            <div class="teleprompter-controls">
+                                <button id="btn-narrate-story" class="primary-button">
+                                    <i data-lucide="volume-2"></i> Play Voice Narration
+                                </button>
+                                <button id="btn-stop-narration" class="secondary-button">
+                                    <i data-lucide="square"></i> Stop
+                                </button>
+                                <div class="timer-pill" id="presentation-timer">00:00</div>
+                            </div>
+                        </div>
+
+                        <div id="p5-script-container" style="display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-3);">
+                            <!-- Script cards populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== P6: MyGymDiary Wrapped ================== -->
+                <div id="psection-p6" class="practical-section hidden">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: var(--space-3);">
+                            <div>
+                                <h3 style="color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                                    <i data-lucide="sparkles"></i> Practical 6: "MyGymDiary Wrapped" (Personalized Case Study)
+                                </h3>
+                                <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                                    Transforms member metrics into engaging, personalized social narratives inspired by Spotify Wrapped.
+                                </p>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <label style="font-size: 0.82rem; font-weight: 700;">Select Client:</label>
+                                <select id="wrapped-client-select" class="form-control" style="min-width: 200px;">
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="wrapped-output-container">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== P7: Dataset Profiling & Data Quality ================== -->
+                <div id="psection-p7" class="practical-section hidden">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <h3 style="margin-bottom: 8px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="database"></i> Practical 7: Data Quality Profiling & Missing Values Heatmap
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-3);">
+                            Inspect missing fields, evaluate Tukey IQR outlier fences, and measure overall dataset integrity score.
+                        </p>
+
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <h4><i data-lucide="check-square"></i> Column Completeness Matrix (%)</h4>
+                                <div class="chart-container">
+                                    <canvas id="profile-matrix-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="card" style="padding: var(--space-3); display: flex; flex-direction: column; justify-content: space-between;">
+                                <div>
+                                    <h4 style="margin-bottom: 8px; color: var(--primary-dark);">Outlier Boundary Analysis (Tukey IQR)</h4>
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+                                        Identifies biometrically improbable records outside Q1 - 1.5*IQR and Q3 + 1.5*IQR.
+                                    </p>
+                                    <div id="p7-outlier-stats" style="font-size: 0.88rem;">
+                                        <!-- Populated via JS -->
+                                    </div>
+                                </div>
+                                <div style="margin-top: 16px;">
+                                    <button class="primary-button" onclick="exportToCSV()" style="width: 100%; justify-content: center;">
+                                        <i data-lucide="file-check"></i> Export Cleaned Verified Dataset (CSV)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== P8: Dynamic Histogram & Normal Curve ================== -->
+                <div id="psection-p8" class="practical-section hidden">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: var(--space-2);">
+                            <div>
+                                <h3 style="color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                                    <i data-lucide="bar-chart-2"></i> Practical 8: Single Distribution Explorer & Live Bin Slider
+                                </h3>
+                                <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                                    Experiment with different bin counts (5 to 30) to observe how bin size alters distribution shape and skewness interpretation.
+                                </p>
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <label style="font-size: 0.85rem; font-weight: 700;">Variable:</label>
+                                <select id="p8-variable-select" class="form-control" style="padding: 6px 10px;">
+                                    <option value="Weight">Weight (kg)</option>
+                                    <option value="Height">Height (cm)</option>
+                                    <option value="Age">Age (years)</option>
+                                    <option value="BMI">Calculated BMI</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Live Bin Size Slider -->
+                        <div class="slider-group" style="background: var(--bg-card-subtle); padding: 10px 14px; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); margin-bottom: var(--space-3);">
+                            <label style="font-size: 0.85rem; font-weight: 700; min-width: 130px;">
+                                Bin Count: <span id="p8-bin-val" style="color: var(--primary);">10</span> bins
+                            </label>
+                            <input type="range" id="p8-bin-slider" min="5" max="30" value="10" step="1">
+                        </div>
+
+                        <div class="chart-card" style="margin-bottom: var(--space-3);">
+                            <div class="chart-container" style="height: 320px;">
+                                <canvas id="p8-dynamic-histogram"></canvas>
+                            </div>
+                        </div>
+
+                        <div id="p8-stats-grid" class="metrics-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== P9: Comparative Box Plot & Multi-Distribution ================== -->
+                <div id="psection-p9" class="practical-section hidden">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <h3 style="margin-bottom: 8px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="layers"></i> Practical 9: Multi-Distribution & Quartile Range Visualizer
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-3);">
+                            Analyze simultaneous distributions across categories: Grouped demographic bar charts and five-number summary quartile spreads (Min, Q1, Median, Q3, Max).
+                        </p>
+
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <h4><i data-lucide="bar-chart-2"></i> Gender vs Fitness Goal Distribution</h4>
+                                <div class="chart-container">
+                                    <canvas id="p9-grouped-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <h4><i data-lucide="box"></i> Five-Number Summary Quartile Range</h4>
+                                <div class="chart-container">
+                                    <canvas id="p9-boxplot-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== P10: Proportional Pie vs. Bar Arena ================== -->
+                <div id="psection-p10" class="practical-section hidden">
+                    <div class="card" style="padding: var(--space-4); margin-bottom: var(--space-3);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: var(--space-3);">
+                            <div>
+                                <h3 style="color: var(--primary-dark); display: flex; align-items: center; gap: 8px;">
+                                    <i data-lucide="pie-chart"></i> Practical 10: Proportional Analysis Arena (Pie vs. Horizontal Bar)
+                                </h3>
+                                <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                                    Demonstrating why horizontal bar charts provide superior cognitive comparison over pie charts when categories exceed 4.
+                                </p>
+                            </div>
+                            <select id="p10-field-select" class="form-control">
+                                <option value="Goal">Categorical: Fitness Goals</option>
+                                <option value="BMI_Category">Categorical: BMI Classifications</option>
+                            </select>
+                        </div>
+
+                        <div class="split-view-container">
+                            <div class="chart-card">
+                                <h4><i data-lucide="pie-chart"></i> Donut / Proportional View</h4>
+                                <div class="chart-container">
+                                    <canvas id="p10-pie-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <h4><i data-lucide="bar-chart-horizontal"></i> Linear Ranked Bar View (Recommended)</h4>
+                                <div class="chart-container">
+                                    <canvas id="p10-bar-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="padding: var(--space-3); background: var(--bg-card-subtle); margin-top: var(--space-3);">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 4px;"><i data-lucide="lightbulb"></i> Cognitive Storytelling Principle</h4>
+                            <p id="p10-cognitive-insight" style="font-size: 0.88rem; color: var(--text-secondary);">
+                                Humans judge length and position with 2.8x greater precision than angles and surface areas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 4. CLIENT ROSTER VIEW
+                 ================================================================ -->
+            <section id="view-clients" class="view hidden">
+                <div class="header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h1>Client Roster</h1>
+                        <p class="subtitle">Complete tabular view of all processed athlete profiles. Click any name for full dossier.</p>
+                    </div>
+                    <!-- DAA Search & Sort Controls -->
+                    <div style="display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; justify-content: flex-end;">
+                        <select id="filter-bmi" class="form-control">
+                            <option value="All">All BMI Categories</option>
+                            <option value="Underweight">Underweight</option>
+                            <option value="Healthy">Healthy</option>
+                            <option value="Overweight">Overweight</option>
+                            <option value="Obese">Obese</option>
+                        </select>
+                        <select id="filter-goal" class="form-control">
+                            <option value="All">All Goals</option>
+                            <option value="Weight Loss">Weight Loss</option>
+                            <option value="Muscle Gain">Muscle Gain</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Performance">Performance</option>
+                        </select>
+                        <select id="client-sort" class="form-control">
+                            <option value="Name">Sort by Name</option>
+                            <option value="Age">Sort by Age</option>
+                            <option value="Weight">Sort by Weight</option>
+                            <option value="BMI">Sort by BMI</option>
+                        </select>
+                        <div style="position: relative;">
+                            <input type="text" id="client-search" placeholder="Search by name..." style="width: 220px;">
+                            <small id="search-indicator" style="position: absolute; bottom: -18px; right: 0; color: var(--primary); font-size: 0.72rem; display: none;">
+                                ✨ Binary Search active
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-container table-container" style="margin-top: 14px;">
+                    <table class="client-table" id="client-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Gender</th>
+                                <th>Weight (kg)</th>
+                                <th>Height (cm)</th>
+                                <th>BMI</th>
+                                <th>Category</th>
+                                <th>Goal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="client-table-body">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ================================================================
+                 5. GOAL PREDICTION VIEW
+                 ================================================================ -->
+            <section id="view-prediction" class="view hidden">
+                <div class="header">
+                    <h1>Goal Feasibility Predictor</h1>
+                    <p class="subtitle">Linear progression modeling, calorie compliance factors, and goal probability forecasting.</p>
+                </div>
+
+                <div class="content-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); align-items: start;">
+                    <!-- Input Form -->
+                    <div class="card" style="padding: var(--space-4);">
+                        <h3 style="margin-bottom: var(--space-2); border-bottom: 2px solid var(--border-color); padding-bottom: 8px; color: var(--primary-dark);">
+                            1. Select Athlete & Target
+                        </h3>
+                        
+                        <div style="margin-bottom: var(--space-2);">
+                            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Gym Member</label>
+                            <select id="pred-client-select" class="form-control" style="width: 100%;">
+                                <option value="">-- Choose a Client --</option>
+                            </select>
+                        </div>
+                        
+                        <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-2);">
+                            <div style="flex: 1;">
+                                <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Target Weight (kg)</label>
+                                <input type="number" id="pred-target-weight" class="form-control" style="width: 100%;" placeholder="e.g. 72">
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Timeframe (Weeks)</label>
+                                <input type="number" id="pred-timeframe" class="form-control" style="width: 100%;" placeholder="e.g. 12" value="12">
+                            </div>
+                        </div>
+
+                        <h3 style="margin-bottom: var(--space-2); margin-top: var(--space-3); border-bottom: 2px solid var(--border-color); padding-bottom: 8px; color: var(--primary-dark);">
+                            2. Lifestyle Compliance
+                        </h3>
+                        
+                        <div style="margin-bottom: var(--space-2);">
+                            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Dietary Adherence</label>
+                            <select id="pred-diet" class="form-control" style="width: 100%;">
+                                <option value="Average">Average (Tracks roughly, occasional cheat meals)</option>
+                                <option value="Strict">Strict (Tracks macros & caloric deficit)</option>
+                                <option value="Poor">Poor (High processed foods, inconsistent)</option>
+                            </select>
+                        </div>
+                        
+                        <div style="margin-bottom: var(--space-3);">
+                            <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px;">Workout Frequency</label>
+                            <select id="pred-workout" class="form-control" style="width: 100%;">
+                                <option value="3-4">3-4 sessions per week (Optimal)</option>
+                                <option value="5+">5+ sessions per week (High Volume)</option>
+                                <option value="1-2">1-2 sessions per week (Low Volume)</option>
+                            </select>
+                        </div>
+
+                        <button id="btn-analyze-prediction" class="primary-button" style="width: 100%; justify-content: center;">
+                            <i data-lucide="activity"></i> Run Feasibility Simulation
+                        </button>
+                    </div>
+
+                    <!-- Output Results -->
+                    <div id="pred-results-container" class="card" style="padding: var(--space-4); text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 420px;">
+                        <div id="pred-placeholder" style="color: var(--text-secondary);">
+                            <img src="Assets/9c4c03de-737f-469c-8893-59cb750fdd5e.png" alt="Focus Mascot" style="width: 72px; height: 72px; object-fit: contain; margin-bottom: 12px;">
+                            <p style="font-weight: 600;">Select an athlete and run analysis to calculate feasibility.</p>
+                        </div>
+                        
+                        <div id="pred-output" class="hidden">
+                            <h3 style="margin-bottom: 6px; font-size: 1.15rem; color: var(--text-secondary);">Achievability Score</h3>
+                            <div style="position: relative; width: 140px; height: 140px; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--bg-card); border: 8px solid var(--border-color); margin-bottom: var(--space-2);" id="pred-score-ring">
+                                <span id="pred-score-val" style="font-size: 2.5rem; font-weight: 800;">85%</span>
+                            </div>
+                            <h2 id="pred-verdict" style="margin-bottom: 12px; font-size: 1.6rem;">Highly Likely</h2>
+                            
+                            <div class="card" style="padding: var(--space-3); text-align: left; background: var(--bg-main);">
+                                <h4 style="margin-bottom: 8px; font-size: 0.85rem; color: var(--text-secondary);">Biomechanical Feasibility Breakdown</h4>
+                                <ul style="list-style: none; margin: 0; padding: 0; font-size: 0.88rem;">
+                                    <li style="margin-bottom: 6px; display: flex; justify-content: space-between;">
+                                        <span>Current Starting Weight:</span> <strong id="pred-out-current">-- kg</strong>
+                                    </li>
+                                    <li style="margin-bottom: 6px; display: flex; justify-content: space-between;">
+                                        <span>Required Change per Week:</span> <strong id="pred-out-req">-- kg/wk</strong>
+                                    </li>
+                                    <li style="display: flex; justify-content: space-between;">
+                                        <span>Safe Physiological Limit:</span> <strong>0.85 - 1.0 kg/wk</strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Client Detail Modal -->
+    <div id="client-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="Assets/logo.png" style="width: 28px; height: 28px;" alt="Logo">
+                    <h3 id="modal-client-name">Athlete Dossier</h3>
+                </div>
+                <button class="icon-button" id="close-modal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" id="modal-client-details">
+                <!-- Populated via JS -->
+            </div>
+            <div class="modal-chart-container" id="modal-chart-section" style="padding: 0 20px 20px 20px; display: none;">
+                <h4 style="margin-bottom: 10px; font-size: 0.95rem; color: var(--text-primary); border-top: 1.5px solid var(--border-color); padding-top: 12px;">
+                    Progressive Weight Progression History
+                </h4>
+                <div style="position: relative; height: 200px; width: 100%;">
+                    <canvas id="client-weight-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Application Logic (v2.6 Cache-Busted) -->
+    <script src="js/engine.js?v=2.6"></script>
+    <script src="js/charts.js?v=2.6"></script>
+    <script src="js/app.js?v=2.6"></script>
 </body>
+
 </html>

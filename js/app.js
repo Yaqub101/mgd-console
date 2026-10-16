@@ -934,7 +934,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Local Storage Auto-Hydration with Schema Version Invalidation ---
-    const CURRENT_SCHEMA_VER = 'v2.5_storytelling_suite';
+    const CURRENT_SCHEMA_VER = 'v2.6_storytelling_suite';
     if (localStorage.getItem('mgd_schema_version') !== CURRENT_SCHEMA_VER) {
         localStorage.removeItem('mgd_data');
         localStorage.setItem('mgd_schema_version', CURRENT_SCHEMA_VER);

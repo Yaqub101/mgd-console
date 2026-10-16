@@ -1,0 +1,13 @@
+# Dependencies and environment
+.firebase/
+__pycache__/
+*.pyc
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
